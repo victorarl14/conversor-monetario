@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Al Cambio VE - Conversor de Monedas',
-  description: 'Aplicación para convertir monedas en tiempo real',
-  generator: 'v0.dev',
+  title: 'Cambio Oficial',
+  description: 'Conversor de monedas con tasas oficiales venezolanas',
+  generator: 'v1.0.0',
 }
 
 export default function RootLayout({

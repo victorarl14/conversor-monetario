@@ -1,4 +1,4 @@
-# Al Cambio VE - Conversor de Monedas
+# Cambio Oficial - Conversor de Monedas
 
 Aplicación web para convertir monedas usando las tasas oficiales del Banco Central de Venezuela (BCV).
 
