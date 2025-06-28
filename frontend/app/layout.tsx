@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Cambio Oficial',
+  title: 'Conversor Monetario',
   description: 'Conversor de monedas con tasas oficiales venezolanas',
   generator: 'v1.0.0',
 }
