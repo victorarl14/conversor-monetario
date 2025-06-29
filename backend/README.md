@@ -126,3 +126,10 @@ CMD ["npm", "run", "start:prod"]
 - En producción, se integraría con la API oficial del BCV
 - El servicio está preparado para escalabilidad
 - Manejo de errores implementado con HttpException 
+
+## 🤖 Asistencia de IA
+
+Este backend fue desarrollado con la ayuda de herramientas de inteligencia artificial:
+- **Vercel AI** para generación y mejora de código.
+- **Cursor** como editor asistido por IA para acelerar el desarrollo y depuración.
+- **Extensión de Figma** para generación y exportación rápida de componentes visuales. 

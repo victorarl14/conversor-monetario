@@ -155,3 +155,10 @@ npm run start:prod
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+
+## 🤖 Asistencia de IA
+
+Este proyecto fue desarrollado con la ayuda de herramientas de inteligencia artificial:
+- **Vercel AI** para generación y mejora de código.
+- **Cursor** como editor asistido por IA para acelerar el desarrollo y depuración.
+- **Extensión de Figma** para generación y exportación rápida de componentes visuales.
