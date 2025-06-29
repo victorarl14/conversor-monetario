@@ -88,7 +88,8 @@ export class BCVService {
           const rateElement = $(`#${currencyId} .centrado strong`);
           const rateText = rateElement.text().trim();
           if (rateText) {
-            const rate = parseFloat(rateText.replace(',', '.'));
+            // Mantener 8 decimales exactos
+            const rate = parseFloat(parseFloat(rateText.replace(',', '.')).toFixed(8));
             if (!isNaN(rate) && rate > 0) {
               rates.push({ currency: currencyCode, rate: rate, date: rateDate });
               // Buscar la moneda

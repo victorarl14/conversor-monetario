@@ -37,8 +37,8 @@ export default function ExchangeRatesDisplay() {
 
   const formatRate = (rate: number) => {
     return new Intl.NumberFormat("es-VE", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 8,
+      maximumFractionDigits: 8,
     }).format(rate)
   }
 

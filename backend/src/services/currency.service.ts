@@ -165,7 +165,7 @@ export class CurrencyService {
         amount,
         fromCurrency: fromCurrencyData,
         toCurrency: toCurrencyData,
-        convertedAmount: Number.parseFloat(convertedAmount.toFixed(2)),
+        convertedAmount,
         rate,
         lastUpdated: new Date().toISOString(),
       };

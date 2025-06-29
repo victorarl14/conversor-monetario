@@ -61,11 +61,26 @@ export default function CurrencyConverter() {
     }
   }, [amount, fromCurrency, toCurrency])
 
-  const formatNumber = (num: number) => {
-    return new Intl.NumberFormat("es-VE", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(num)
+  function FormattedNumber({ num }: { num: number | string }) {
+    const [formatted, setFormatted] = useState<string>("");
+    useEffect(() => {
+      let n = typeof num === 'string' ? Number(num) : num;
+      if (isNaN(n)) {
+        setFormatted("");
+        return;
+      }
+      setFormatted(
+        n.toLocaleString('en-US', {
+          useGrouping: true,
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 8,
+        })
+          .replace(/(\.\d*?[1-9])0+$/, '$1')
+          .replace(/\.$/, '')
+      );
+    }, [num]);
+    if (!formatted) return null;
+    return <>{formatted}</>;
   }
 
   return (
@@ -82,19 +97,36 @@ export default function CurrencyConverter() {
             <Input
               type="number"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value.length > 20) return;
+                if (/^\d*(\.?\d{0,8})?$/.test(value)) {
+                  setAmount(value);
+                }
+              }}
               placeholder="Ingresa la cantidad"
               className="text-lg font-semibold text-center"
               min="0"
-              step="0.01"
+              step="0.00000001"
+              maxLength={20}
             />
           </div>
 
           {/* Moneda origen */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">De</label>
-            <Select value={fromCurrency} onChange={e => setFromCurrency(e.target.value)}>
-              {CURRENCIES.filter((c) => c.code !== "VES").map((currency) => (
+            <Select value={fromCurrency} onChange={e => {
+              const value = e.target.value;
+              setFromCurrency(value);
+              // Si el nuevo origen es VES, el destino debe ser la primera moneda distinta de VES
+              if (value === 'VES') {
+                const firstNonVES = CURRENCIES.find(c => c.code !== 'VES');
+                if (firstNonVES) setToCurrency(firstNonVES.code);
+              } else {
+                setToCurrency('VES');
+              }
+            }}>
+              {CURRENCIES.map((currency) => (
                 <SelectItem key={currency.code} value={currency.code}>
                   {currency.flag} {currency.code} - {currency.name}
                 </SelectItem>
@@ -107,7 +139,16 @@ export default function CurrencyConverter() {
             <Button
               variant="outline"
               size="icon"
-              onClick={handleSwapCurrencies}
+              onClick={() => {
+                // Solo permitir swap entre VES y otra moneda
+                if (fromCurrency === 'VES') {
+                  setFromCurrency(toCurrency);
+                  setToCurrency('VES');
+                } else if (toCurrency === 'VES') {
+                  setToCurrency(fromCurrency);
+                  setFromCurrency('VES');
+                }
+              }}
               className="rounded-full h-10 w-10 border-2 hover:bg-blue-50 bg-transparent"
             >
               <ArrowUpDown className="h-4 w-4" />
@@ -118,7 +159,17 @@ export default function CurrencyConverter() {
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">A</label>
             <Select value={toCurrency} onChange={e => setToCurrency(e.target.value)}>
-              <SelectItem value="VES">🇻🇪 VES - Bolívar Venezolano</SelectItem>
+              {fromCurrency === 'VES'
+                ? CURRENCIES.filter(c => c.code !== 'VES').map(currency => (
+                    <SelectItem key={currency.code} value={currency.code}>
+                      {currency.flag} {currency.code} - {currency.name}
+                    </SelectItem>
+                  ))
+                : [
+                    <SelectItem key="VES" value="VES">
+                      VE VES - Bolívar Venezolano
+                    </SelectItem>
+                  ]}
             </Select>
           </div>
 
@@ -126,21 +177,17 @@ export default function CurrencyConverter() {
           {result && (
             <div className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border">
               <div className="text-center space-y-2">
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-lg">{result.fromCurrency.flag}</span>
-                  <span className="text-lg font-semibold">
-                    {result.fromCurrency.symbol}
-                    {formatNumber(result.amount)}
+                <div className="flex flex-col items-center justify-center space-y-2 break-all">
+                  <span className="text-lg font-semibold break-all" style={{ wordBreak: 'break-all' }}>
+                    {result.fromCurrency.flag} <FormattedNumber num={result.amount} />
                   </span>
                   <span className="text-gray-500">=</span>
-                  <span className="text-lg">{result.toCurrency.flag}</span>
-                  <span className="text-xl font-bold text-green-600">
-                    {result.toCurrency.symbol}
-                    {formatNumber(result.convertedAmount)}
+                  <span className="text-xl font-bold text-green-600 break-all" style={{ wordBreak: 'break-all' }}>
+                    {result.toCurrency.flag} <FormattedNumber num={result.convertedAmount} />
                   </span>
                 </div>
                 <div className="text-xs text-gray-600">
-                  Tasa: 1 {result.fromCurrency.code} = {formatNumber(result.rate)} {result.toCurrency.code}
+                  Tasa: 1 {result.fromCurrency.code} = <FormattedNumber num={result.rate} /> {result.toCurrency.code}
                 </div>
               </div>
             </div>

@@ -91,4 +91,19 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Oculta todos los overlays y portales de Next.js en desarrollo */
+.nextjs-portal,
+[data-nextjs-dev-overlay],
+[data-nextjs-error-overlay],
+#nextjs__container,
+#__nextjs-error-overlay,
+#__next-route-announcer__ {
+  display: none !important;
+}
+
+/* Oculta cualquier div flotante de Next.js en la esquina inferior izquierda */
+body > div[style*="position: fixed"][style*="left: 0px"][style*="bottom: 0px"] {
+  display: none !important;
 } 

@@ -1,10 +1,17 @@
-import { Controller, Get, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { CurrencyService } from "../services/currency.service"
 import type { ConversionRequest } from "../types/currency.types"
+import { ExchangeRateHistory } from '../entities/exchange-rate-history.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Controller('currency')
 export class CurrencyController {
-  constructor(private readonly currencyService: CurrencyService) {}
+  constructor(
+    private readonly currencyService: CurrencyService,
+    @InjectRepository(ExchangeRateHistory)
+    private readonly historyRepo: Repository<ExchangeRateHistory>,
+  ) {}
 
   @Get('currencies')
   async getCurrencies() {
@@ -76,5 +83,17 @@ export class CurrencyController {
       }
       throw new HttpException('Error en la conversión', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  @Get('history')
+  async getHistory(@Query('currency') currencyCode: string) {
+    if (!currencyCode) {
+      throw new HttpException('Debe especificar el parámetro currency', HttpStatus.BAD_REQUEST);
+    }
+    const history = await this.historyRepo.find({
+      where: { currency: { code: currencyCode } },
+      order: { rateDate: 'DESC', createdAt: 'DESC' },
+    });
+    return { success: true, data: history };
   }
 }
