@@ -77,6 +77,7 @@ export class CurrencyService {
           to: "VES",
           rate: rate.rate,
           lastUpdated: bcvData.lastUpdated,
+          rateDate: rate.date,
         }));
 
       this.logger.log(`Tasas oficiales obtenidas del BCV: ${rates.length} monedas`);

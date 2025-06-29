@@ -95,24 +95,19 @@ export class BCVService {
               // Buscar la moneda
               const currency = await this.currencyRepo.findOneBy({ code: currencyCode });
               if (currency) {
-                // Buscar el último registro para esta moneda y fecha
-                const last = await this.historyRepo.findOne({
-                  where: { currency: { id: currency.id }, rateDate },
-                  order: { createdAt: 'DESC' },
-                });
-                if (!last) {
-                  // No hay registro para esta moneda y fecha, inserta
-                  await this.historyRepo.save({
-                    currency,
-                    rate,
+                // Buscar si ya existe un registro con la misma moneda, fecha y tasa
+                const rateFixed = Number(rate.toFixed(8));
+                const exists = await this.historyRepo.findOne({
+                  where: {
+                    currency: { id: currency.id },
                     rateDate,
-                    rateDateTime,
-                  });
-                } else if (Number(last.rate) !== rate) {
-                  // Hay registro, pero la tasa cambió, inserta el nuevo cambio
+                    rate: rateFixed,
+                  },
+                });
+                if (!exists) {
                   await this.historyRepo.save({
                     currency,
-                    rate,
+                    rate: rateFixed,
                     rateDate,
                     rateDateTime,
                   });
@@ -127,13 +122,15 @@ export class BCVService {
       // Agregar VES con tasa 1.0
       const vesCurrency = await this.currencyRepo.findOneBy({ code: 'VES' });
       if (vesCurrency) {
-        const lastVES = await this.historyRepo.findOne({
-          where: { currency: { id: vesCurrency.id }, rateDate },
-          order: { createdAt: 'DESC' },
+        // Para VES
+        const existsVES = await this.historyRepo.findOne({
+          where: {
+            currency: { id: vesCurrency.id },
+            rateDate,
+            rate: 1.0,
+          },
         });
-        if (!lastVES) {
-          await this.historyRepo.save({ currency: vesCurrency, rate: 1.0, rateDate, rateDateTime });
-        } else if (Number(lastVES.rate) !== 1.0) {
+        if (!existsVES) {
           await this.historyRepo.save({ currency: vesCurrency, rate: 1.0, rateDate, rateDateTime });
         }
       }

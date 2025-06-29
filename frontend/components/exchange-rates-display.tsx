@@ -7,11 +7,21 @@ import { RefreshCw } from "lucide-react"
 import type { ExchangeRate } from "@/lib/types"
 import { getCurrencyByCode } from "@/lib/currencies"
 
+function formatFechaConDia(fechaISO: string) {
+  if (!fechaISO) return "";
+  const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  const [anio, mes, dia] = fechaISO.split("-");
+  const dateObj = new Date(Number(anio), Number(mes) - 1, Number(dia));
+  const diaSemana = dias[dateObj.getDay()];
+  return `${diaSemana}, ${dia}/${mes}/${anio}`;
+}
+
 export default function ExchangeRatesDisplay() {
   const [rates, setRates] = useState<ExchangeRate[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [lastUpdated, setLastUpdated] = useState<string>("")
   const [mounted, setMounted] = useState(false)
+  const [rateDate, setRateDate] = useState<string>("")
 
   const fetchRates = async () => {
     setLoading(true)
@@ -22,6 +32,9 @@ export default function ExchangeRatesDisplay() {
       if (data.success) {
         setRates(data.rates)
         setLastUpdated(new Date().toLocaleTimeString("es-VE"))
+        if (data.rates.length > 0 && data.rates[0].rateDate) {
+          setRateDate(data.rates[0].rateDate)
+        }
       }
     } catch (error) {
       console.error("Error al obtener tasas:", error)
@@ -57,6 +70,11 @@ export default function ExchangeRatesDisplay() {
         </Button>
       </CardHeader>
       <CardContent className="space-y-3">
+        {rateDate && (
+          <div className="text-center text-xs text-gray-700 pb-2">
+            Tasas oficiales del BCV para el <b>{formatFechaConDia(rateDate)}</b>
+          </div>
+        )}
         {rates.map((rate) => {
           const fromCurrency = getCurrencyByCode(rate.from)
           const toCurrency = getCurrencyByCode(rate.to)
