@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: conversor-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+    autoDeploy: true
+    rootDir: conversor-monetario
+    healthCheckPath: /api/currency/currencies
+    
+  - type: web
+    name: conversor-frontend
+    env: node
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        value: https://conversor-backend.onrender.com/api
+    autoDeploy: true
+    rootDir: conversor-monetario
+    staticPublishPath: frontend/.next 
