@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import DarkModeToggle from '@/components/DarkModeToggle'
+import DarkModeToggle from '../components/DarkModeToggle'
 
 export const metadata: Metadata = {
   title: 'Conversor Monetario',
