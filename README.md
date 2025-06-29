@@ -78,7 +78,7 @@ npm run start:dev
 
 #### Frontend (.env.local)
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
+NEXT_PUBLIC_API_URL=https://conversor-backend-mceg.onrender.com/api
 ```
 
 #### Backend (.env)
@@ -136,6 +136,41 @@ cd backend
 npm run build
 npm run start:prod
 ```
+
+## 🚀 Despliegue en Render
+
+Este proyecto está preparado para desplegarse fácilmente en [Render](https://render.com) usando el archivo `render.yaml` incluido en el repositorio.
+
+### 1. Requisitos previos
+- Tener una cuenta en Render.
+- Tener el repositorio en GitHub.
+
+### 2. Despliegue del Backend (NestJS)
+- Render detectará el servicio backend desde el blueprint `render.yaml`.
+- El backend se desplegará como un servicio web Node.js.
+- Configura las variables de entorno para la base de datos PostgreSQL (puedes usar el panel de Render para crear una base de datos y copiar las variables de conexión: `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`).
+- El backend se expone en el puerto 3001 y tiene un health check en `/api/currency/currencies`.
+
+### 3. Despliegue del Frontend (Next.js)
+- Render detectará el servicio frontend desde el blueprint `render.yaml`.
+- El frontend se desplegará como un servicio web Node.js.
+- Configura la variable de entorno `NEXT_PUBLIC_API_URL` para que apunte a la URL pública del backend en Render (por ejemplo, `https://conversor-backend-xxxx.onrender.com/api`).
+
+### 4. Despliegue de la Base de Datos
+- Puedes crear una base de datos PostgreSQL directamente desde el panel de Render.
+- Render te dará las variables de conexión necesarias para el backend.
+
+### 5. Proceso automático
+- Render lee el archivo `render.yaml` y crea ambos servicios (frontend y backend) automáticamente.
+- Cada push a la rama principal del repositorio dispara un nuevo deploy.
+
+### 6. Acceso
+- El frontend estará disponible en una URL pública de Render (por ejemplo, `https://conversor-frontend-xxxx.onrender.com`).
+- El backend estará disponible en su propia URL pública de Render.
+
+---
+
+¿Dudas? Consulta la documentación oficial de Render o revisa el archivo `render.yaml` para ver la configuración exacta.
 
 ## 📝 Notas
 
