@@ -82,8 +82,9 @@ NODE_ENV=development
 
 - **USD** - Dólar Estadounidense
 - **EUR** - Euro
-- **GBP** - Libra Esterlina
 - **CNY** - Yuan Chino
+- **TRY** - Lira Turca
+- **RUB** - Rublo Ruso
 - **VES** - Bolívar Venezolano
 
 ## 🔒 CORS

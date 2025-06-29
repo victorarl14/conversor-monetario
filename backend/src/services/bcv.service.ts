@@ -100,7 +100,16 @@ export class BCVService {
                   where: { currency: { id: currency.id }, rateDate },
                   order: { createdAt: 'DESC' },
                 });
-                if (!last || Number(last.rate) !== rate) {
+                if (!last) {
+                  // No hay registro para esta moneda y fecha, inserta
+                  await this.historyRepo.save({
+                    currency,
+                    rate,
+                    rateDate,
+                    rateDateTime,
+                  });
+                } else if (Number(last.rate) !== rate) {
+                  // Hay registro, pero la tasa cambió, inserta el nuevo cambio
                   await this.historyRepo.save({
                     currency,
                     rate,
@@ -122,7 +131,9 @@ export class BCVService {
           where: { currency: { id: vesCurrency.id }, rateDate },
           order: { createdAt: 'DESC' },
         });
-        if (!lastVES || Number(lastVES.rate) !== 1.0) {
+        if (!lastVES) {
+          await this.historyRepo.save({ currency: vesCurrency, rate: 1.0, rateDate, rateDateTime });
+        } else if (Number(lastVES.rate) !== 1.0) {
           await this.historyRepo.save({ currency: vesCurrency, rate: 1.0, rateDate, rateDateTime });
         }
       }
