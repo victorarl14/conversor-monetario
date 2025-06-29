@@ -56,22 +56,22 @@ export default function ExchangeRatesDisplay() {
   }
 
   return (
-    <Card className="border-0 shadow-lg">
+    <Card className="border-0 shadow-lg dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-lg font-semibold">Tasas de Cambio</CardTitle>
+        <CardTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100">Tasas de Cambio</CardTitle>
         <Button
           variant="outline"
           size="sm"
           onClick={fetchRates}
           disabled={loading}
-          className="h-8 w-8 p-0 bg-transparent"
+          className="h-8 w-8 p-0 bg-transparent dark:border-gray-700 dark:hover:bg-gray-800"
         >
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
         </Button>
       </CardHeader>
       <CardContent className="space-y-3">
         {rateDate && (
-          <div className="text-center text-xs text-gray-700 pb-2">
+          <div className="text-center text-xs text-gray-700 dark:text-gray-300 pb-2">
             Tasas oficiales del BCV para el <b>{formatFechaConDia(rateDate)}</b>
           </div>
         )}
@@ -84,23 +84,23 @@ export default function ExchangeRatesDisplay() {
           return (
             <div
               key={`${rate.from}-${rate.to}`}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg dark:bg-gray-800"
             >
               <div className="flex items-center space-x-3">
                 <span className="text-lg">{fromCurrency.flag}</span>
                 <div>
-                  <div className="font-medium text-sm">
+                  <div className="font-medium text-sm text-gray-800 dark:text-gray-100">
                     {fromCurrency.code} → {toCurrency.code}
                   </div>
-                  <div className="text-xs text-gray-600">{fromCurrency.name}</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-300">{fromCurrency.name}</div>
                 </div>
               </div>
               <div className="text-right">
-                <div className="font-bold text-green-600">
+                <div className="font-bold text-green-600 dark:text-green-400">
                   {toCurrency.symbol}
                   {formatRate(rate.rate)}
                 </div>
-                <div className="text-xs text-gray-500">por 1 {fromCurrency.symbol}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-300">por 1 {fromCurrency.symbol}</div>
               </div>
             </div>
           )
@@ -108,10 +108,10 @@ export default function ExchangeRatesDisplay() {
 
         {/* Si no hay tasas disponibles y no estamos cargando, mostramos un mensaje informativo */}
         {!loading && rates.length === 0 && (
-          <p className="text-center text-sm text-gray-500">No hay tasas disponibles en este momento.</p>
+          <p className="text-center text-sm text-gray-500 dark:text-gray-300">No hay tasas disponibles en este momento.</p>
         )}
 
-        {mounted && lastUpdated && <div className="text-center text-xs text-gray-500 pt-2">Actualizado: {lastUpdated}</div>}
+        {mounted && lastUpdated && <div className="text-center text-xs text-gray-500 dark:text-gray-300 pt-2">Actualizado: {lastUpdated}</div>}
       </CardContent>
     </Card>
   )

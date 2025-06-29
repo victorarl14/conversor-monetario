@@ -85,15 +85,15 @@ export default function CurrencyConverter() {
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
         <CardHeader className="text-center pb-4">
-          <CardTitle className="text-2xl font-bold text-gray-800">Conversor de Monedas</CardTitle>
-          <p className="text-sm text-gray-600">Tasas oficiales BCV</p>
+          <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-100">Conversor de Monedas</CardTitle>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Tasas oficiales BCV</p>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Cantidad a convertir */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Cantidad</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Cantidad</label>
             <Input
               type="number"
               value={amount}
@@ -105,7 +105,7 @@ export default function CurrencyConverter() {
                 }
               }}
               placeholder="Ingresa la cantidad"
-              className="text-lg font-semibold text-center"
+              className="text-lg font-semibold text-center dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400"
               min="0"
               step="0.00000001"
               maxLength={20}
@@ -114,7 +114,7 @@ export default function CurrencyConverter() {
 
           {/* Moneda origen */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">De</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">De</label>
             <Select value={fromCurrency} onChange={e => {
               const value = e.target.value;
               setFromCurrency(value);
@@ -149,7 +149,7 @@ export default function CurrencyConverter() {
                   setFromCurrency('VES');
                 }
               }}
-              className="rounded-full h-10 w-10 border-2 hover:bg-blue-50 bg-transparent"
+              className="rounded-full h-10 w-10 border-2 hover:bg-blue-50 bg-transparent dark:border-gray-700 dark:hover:bg-gray-800"
             >
               <ArrowUpDown className="h-4 w-4" />
             </Button>
@@ -157,7 +157,7 @@ export default function CurrencyConverter() {
 
           {/* Moneda destino */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">A</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-200">A</label>
             <Select value={toCurrency} onChange={e => setToCurrency(e.target.value)}>
               {fromCurrency === 'VES'
                 ? CURRENCIES.filter(c => c.code !== 'VES').map(currency => (
@@ -175,18 +175,18 @@ export default function CurrencyConverter() {
 
           {/* Resultado */}
           {result && (
-            <div className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border">
+            <div className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border dark:from-gray-800 dark:to-gray-900 dark:border-gray-700">
               <div className="text-center space-y-2">
                 <div className="flex flex-col items-center justify-center space-y-2 break-all">
-                  <span className="text-lg font-semibold break-all" style={{ wordBreak: 'break-all' }}>
+                  <span className="text-lg font-semibold break-all text-gray-800 dark:text-gray-100" style={{ wordBreak: 'break-all' }}>
                     {result.fromCurrency.flag} <FormattedNumber num={result.amount} />
                   </span>
-                  <span className="text-gray-500">=</span>
+                  <span className="text-gray-500 dark:text-gray-300">=</span>
                   <span className="text-xl font-bold text-green-600 break-all" style={{ wordBreak: 'break-all' }}>
                     {result.toCurrency.flag} <FormattedNumber num={result.convertedAmount} />
                   </span>
                 </div>
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-gray-600 dark:text-gray-300">
                   Tasa: 1 {result.fromCurrency.code} = <FormattedNumber num={result.rate} /> {result.toCurrency.code}
                 </div>
               </div>
@@ -195,8 +195,8 @@ export default function CurrencyConverter() {
 
           {/* Información adicional */}
           <div className="text-center space-y-2">
-            {mounted && lastUpdated && <p className="text-xs text-gray-500">Última actualización: {lastUpdated}</p>}
-            <div className="flex items-center justify-center space-x-1 text-xs text-green-600">
+            {mounted && lastUpdated && <p className="text-xs text-gray-500 dark:text-gray-300">Última actualización: {lastUpdated}</p>}
+            <div className="flex items-center justify-center space-x-1 text-xs text-green-600 dark:text-green-400">
               <TrendingUp className="h-3 w-3" />
               <span>Tasas oficiales del BCV</span>
             </div>
