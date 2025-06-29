@@ -2,6 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 const https = require('https');
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ExchangeRateHistory } from '../entities/exchange-rate-history.entity';
+import { Currency } from '../entities/currency.entity';
 
 export interface BCVRate {
   currency: string;
@@ -31,6 +35,13 @@ export class BCVService {
   private lastCacheTime: number = 0;
   private readonly CACHE_DURATION = 60 * 60 * 1000; // 1 hora en milisegundos
 
+  constructor(
+    @InjectRepository(ExchangeRateHistory)
+    private readonly historyRepo: Repository<ExchangeRateHistory>,
+    @InjectRepository(Currency)
+    private readonly currencyRepo: Repository<Currency>,
+  ) {}
+
   async getOfficialRates(): Promise<BCVData> {
     const now = Date.now();
     
@@ -56,38 +67,64 @@ export class BCVService {
       const $ = cheerio.load(response.data);
       const rates: BCVRate[] = [];
       
-      // Extraer la fecha
+      // Extraer la fecha y hora oficial
       const dateElement = $('span.date-display-single');
       const dateContent = dateElement.attr('content');
-      const rateDate = dateContent ? new Date(dateContent).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+      let rateDate = new Date().toISOString().split('T')[0];
+      let rateDateTime: Date | null = null;
+      if (dateContent) {
+        if (dateContent.includes('T')) {
+          rateDate = dateContent.split('T')[0];
+          rateDateTime = new Date(dateContent);
+        } else {
+          rateDate = dateContent;
+          rateDateTime = null;
+        }
+      }
 
       // Extraer las tasas para cada moneda
       for (const [currencyCode, currencyId] of Object.entries(this.BCV_CURRENCIES)) {
         try {
           const rateElement = $(`#${currencyId} .centrado strong`);
           const rateText = rateElement.text().trim();
-          
           if (rateText) {
             const rate = parseFloat(rateText.replace(',', '.'));
             if (!isNaN(rate) && rate > 0) {
-              rates.push({
-                currency: currencyCode,
-                rate: rate,
-                date: rateDate
-              });
+              rates.push({ currency: currencyCode, rate: rate, date: rateDate });
+              // Buscar la moneda
+              const currency = await this.currencyRepo.findOneBy({ code: currencyCode });
+              if (currency) {
+                // Buscar el último registro para esta moneda y fecha
+                const last = await this.historyRepo.findOne({
+                  where: { currency: { id: currency.id }, rateDate },
+                  order: { createdAt: 'DESC' },
+                });
+                if (!last || Number(last.rate) !== rate) {
+                  await this.historyRepo.save({
+                    currency,
+                    rate,
+                    rateDate,
+                    rateDateTime,
+                  });
+                }
+              }
             }
           }
         } catch (error) {
           this.logger.warn(`Error al extraer tasa para ${currencyCode}: ${error.message}`);
         }
       }
-
       // Agregar VES con tasa 1.0
-      rates.push({
-        currency: 'VES',
-        rate: 1.0,
-        date: rateDate
-      });
+      const vesCurrency = await this.currencyRepo.findOneBy({ code: 'VES' });
+      if (vesCurrency) {
+        const lastVES = await this.historyRepo.findOne({
+          where: { currency: { id: vesCurrency.id }, rateDate },
+          order: { createdAt: 'DESC' },
+        });
+        if (!lastVES || Number(lastVES.rate) !== 1.0) {
+          await this.historyRepo.save({ currency: vesCurrency, rate: 1.0, rateDate, rateDateTime });
+        }
+      }
 
       this.cachedData = {
         rates,
@@ -97,7 +134,7 @@ export class BCVService {
       
       this.lastCacheTime = now;
       
-      this.logger.log(`Tasas oficiales obtenidas exitosamente: ${rates.length} monedas`);
+      this.logger.log(`Tasas oficiales obtenidas y guardadas: ${rates.length} monedas`);
       return this.cachedData;
 
     } catch (error) {
