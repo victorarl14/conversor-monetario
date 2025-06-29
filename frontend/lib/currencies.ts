@@ -1,6 +1,6 @@
 import type { Currency } from "./types"
 
-export const CURRENCIES: Currency[] = [
+export const CURRENCIES = [
   {
     code: "USD",
     name: "Dólar Estadounidense",
@@ -14,16 +14,22 @@ export const CURRENCIES: Currency[] = [
     flag: "🇪🇺",
   },
   {
-    code: "GBP",
-    name: "Libra Esterlina",
-    symbol: "£",
-    flag: "🇬🇧",
-  },
-  {
     code: "CNY",
     name: "Yuan Chino",
     symbol: "¥",
     flag: "🇨🇳",
+  },
+  {
+    code: "TRY",
+    name: "Lira Turca",
+    symbol: "₺",
+    flag: "🇹🇷",
+  },
+  {
+    code: "RUB",
+    name: "Rublo Ruso",
+    symbol: "₽",
+    flag: "🇷🇺",
   },
   {
     code: "VES",

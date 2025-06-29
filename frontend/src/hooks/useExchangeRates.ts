@@ -9,6 +9,7 @@ export function useExchangeRates() {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<string>("")
+  const [mounted, setMounted] = useState(false)
 
   const fetchRates = async () => {
     setLoading(true)
@@ -31,6 +32,7 @@ export function useExchangeRates() {
   }
 
   useEffect(() => {
+    setMounted(true)
     fetchRates()
   }, [])
 
@@ -38,7 +40,8 @@ export function useExchangeRates() {
     rates,
     loading,
     error,
-    lastUpdated,
+    lastUpdated: mounted ? lastUpdated : "",
     refetch: fetchRates,
+    mounted,
   }
 }

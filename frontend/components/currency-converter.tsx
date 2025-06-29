@@ -16,6 +16,7 @@ export default function CurrencyConverter() {
   const [result, setResult] = useState<ConversionResult | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [lastUpdated, setLastUpdated] = useState<string>("")
+  const [mounted, setMounted] = useState(false)
 
   const handleConvert = async () => {
     if (!amount || Number.parseFloat(amount) <= 0) return
@@ -54,14 +55,11 @@ export default function CurrencyConverter() {
   }
 
   useEffect(() => {
+    setMounted(true)
     if (amount && fromCurrency && toCurrency) {
       handleConvert()
     }
   }, [amount, fromCurrency, toCurrency])
-
-  useEffect(() => {
-    setLastUpdated(new Date().toLocaleTimeString("es-VE"))
-  }, [])
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("es-VE", {
@@ -150,7 +148,7 @@ export default function CurrencyConverter() {
 
           {/* Información adicional */}
           <div className="text-center space-y-2">
-            {lastUpdated && <p className="text-xs text-gray-500">Última actualización: {lastUpdated}</p>}
+            {mounted && lastUpdated && <p className="text-xs text-gray-500">Última actualización: {lastUpdated}</p>}
             <div className="flex items-center justify-center space-x-1 text-xs text-green-600">
               <TrendingUp className="h-3 w-3" />
               <span>Tasas oficiales del BCV</span>

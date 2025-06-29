@@ -33,6 +33,20 @@ export class CurrencyController {
     }
   }
 
+  @Get('official-bcv-rates')
+  async getOfficialBCVRates() {
+    try {
+      const bcvData = await this.currencyService.getOfficialBCVRates()
+      return {
+        success: true,
+        data: bcvData,
+        message: 'Tasas oficiales del Banco Central de Venezuela',
+      }
+    } catch (error) {
+      throw new HttpException('Error al obtener las tasas oficiales del BCV', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @Post('convert')
   async convertCurrency(@Body() request: ConversionRequest) {
     try {

@@ -11,6 +11,7 @@ export default function ExchangeRatesDisplay() {
   const [rates, setRates] = useState<ExchangeRate[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [lastUpdated, setLastUpdated] = useState<string>("")
+  const [mounted, setMounted] = useState(false)
 
   const fetchRates = async () => {
     setLoading(true)
@@ -31,6 +32,7 @@ export default function ExchangeRatesDisplay() {
 
   useEffect(() => {
     fetchRates()
+    setMounted(true)
   }, [])
 
   const formatRate = (rate: number) => {
@@ -91,7 +93,7 @@ export default function ExchangeRatesDisplay() {
           <p className="text-center text-sm text-gray-500">No hay tasas disponibles en este momento.</p>
         )}
 
-        {lastUpdated && <div className="text-center text-xs text-gray-500 pt-2">Actualizado: {lastUpdated}</div>}
+        {mounted && lastUpdated && <div className="text-center text-xs text-gray-500 pt-2">Actualizado: {lastUpdated}</div>}
       </CardContent>
     </Card>
   )
