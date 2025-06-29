@@ -119,6 +119,14 @@ NEXT_PUBLIC_API_URL=https://conversor-backend-mceg.onrender.com/api
 ```env
 PORT=3001
 NODE_ENV=development
+
+(Mis credenciales de la base de datos)
+
+DB_HOST= DB_HOST
+DB_PORT= DB_PORT
+DB_NAME= DB_NAME
+DB_USERNAME= DB_USERNAME
+DB_PASSWORD= DB_PASSWORD
 ```
 
 ## 📱 Funcionalidades
