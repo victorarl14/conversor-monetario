@@ -24,7 +24,7 @@ export default function LandingPage() {
                 <p className="text-sm text-gray-600 dark:text-gray-300">Tasas oficiales del BCV</p>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
+            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mr-12">
               <div className="flex items-center space-x-1">
                 <Shield className="h-4 w-4 text-green-600" />
                 <span>Oficial</span>
@@ -60,7 +60,7 @@ export default function LandingPage() {
 
         {/* Features */}
         <div className="mt-16 grid gap-6 md:grid-cols-3 max-w-4xl mx-auto">
-          <div className="text-center p-6 bg-white rounded-lg shadow-sm dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-2xl">
+          <div className="text-center p-6 bg-white/80 border border-gray-200 rounded-lg shadow-lg dark:bg-gray-900 dark:border-gray-700 dark:shadow-2xl">
             <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-4 dark:bg-blue-900">
               <Clock className="h-6 w-6 text-blue-600" />
             </div>
@@ -68,7 +68,7 @@ export default function LandingPage() {
             <p className="text-sm text-gray-600 dark:text-gray-300">Tasas actualizadas constantemente según el BCV oficial</p>
           </div>
 
-          <div className="text-center p-6 bg-white rounded-lg shadow-sm dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-2xl">
+          <div className="text-center p-6 bg-white/80 border border-gray-200 rounded-lg shadow-lg dark:bg-gray-900 dark:border-gray-700 dark:shadow-2xl">
             <div className="bg-green-100 p-3 rounded-full w-fit mx-auto mb-4 dark:bg-green-900">
               <Shield className="h-6 w-6 text-green-600" />
             </div>
@@ -76,7 +76,7 @@ export default function LandingPage() {
             <p className="text-sm text-gray-600 dark:text-gray-300">Basado en las tasas oficiales del Banco Central de Venezuela</p>
           </div>
 
-          <div className="text-center p-6 bg-white rounded-lg shadow-sm dark:bg-gray-900 dark:border dark:border-gray-700 dark:shadow-2xl">
+          <div className="text-center p-6 bg-white/80 border border-gray-200 rounded-lg shadow-lg dark:bg-gray-900 dark:border-gray-700 dark:shadow-2xl">
             <div className="bg-purple-100 p-3 rounded-full w-fit mx-auto mb-4 dark:bg-purple-900">
               <Globe className="h-6 w-6 text-purple-600" />
             </div>
