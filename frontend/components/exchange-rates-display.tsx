@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Button } from "./ui/button"
 import { RefreshCw } from "lucide-react"
-import type { ExchangeRate } from "@/lib/types"
-import { getCurrencyByCode } from "@/lib/currencies"
+import type { ExchangeRate } from "../lib/types"
+import { getCurrencyByCode } from "../lib/currencies"
 
 function formatFechaConDia(fechaISO: string) {
   if (!fechaISO) return "";

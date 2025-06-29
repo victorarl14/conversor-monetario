@@ -6,8 +6,8 @@ import { Input } from "./ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Select, SelectItem } from "./ui/select"
 import { ArrowUpDown, TrendingUp } from "lucide-react"
-import { CURRENCIES } from "@/lib/currencies"
-import type { ConversionResult } from "@/lib/types"
+import { CURRENCIES } from "../lib/currencies"
+import type { ConversionResult } from "../lib/types"
 
 export default function CurrencyConverter() {
   const [amount, setAmount] = useState<string>("1")
