@@ -166,7 +166,7 @@ DB_PASSWORD= DB_PASSWORD
 
 ## 🚀 Despliegue
 
-### Frontend (Vercel)
+### Frontend (Render)
 ```bash
 cd frontend
 npm run build
