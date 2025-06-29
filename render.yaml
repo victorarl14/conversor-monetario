@@ -23,5 +23,5 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_PUBLIC_API_URL
-        value: https://conversor-backend.onrender.com/api
+        value: https://conversor-backend-mceg.onrender.com/api
     autoDeploy: true 
