@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Button } from "./ui/button"
 import { RefreshCw } from "lucide-react"
 import type { ExchangeRate } from "@/lib/types"
 import { getCurrencyByCode } from "@/lib/currencies"

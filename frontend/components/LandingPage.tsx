@@ -1,6 +1,6 @@
 "use client";
-import CurrencyConverter from "@/components/currency-converter";
-import ExchangeRatesDisplay from "@/components/exchange-rates-display";
+import CurrencyConverter from './currency-converter';
+import ExchangeRatesDisplay from './exchange-rates-display';
 import { TrendingUp, Shield, Clock, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 
